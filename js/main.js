@@ -9,11 +9,13 @@ const difficultyMode = document.querySelector(".difficulty-mode");
 const buttonLessDifficulty = document.querySelector(".less-difficulty");
 const buttonMoreDifficulty = document.querySelector(".more-difficulty");
 
+// Define o atraso de tempo inicial para o loop do jogo.
 let timeDelay = 300;
 
 const size = 30;
 const audio = new Audio('../assets/audio.mp3')
 
+// Define a posição inicial da cobra.
 const initialPosition = { x: 270, y: 240 };
 
 let snake = [initialPosition] 
@@ -31,9 +33,11 @@ const drawSnake = () => {
     });
 };
 
+// Variáveis para a direção da cobra e o ID do loop do jogo.
 let direction 
 let loopId
 
+// Função para incrementar a pontuação do jogador.
 const incrementarScore = () =>{
     score.innerText = +score.innerText + 10;
 }
@@ -56,6 +60,7 @@ const randomColor = () =>{
     return `rgb(${red},${green},${blue})`
 }
 
+// Objeto que representa a comida.
 const food = {
     x: randomPosition(),
     y: randomPosition(),
@@ -72,6 +77,7 @@ const drawFood = () => {
     ctx.shadowBlur = 0;
 };
 
+// Função para mover a cobra.
 const moveSnake = () => {
 
     if (!direction) return;
@@ -95,6 +101,7 @@ const moveSnake = () => {
         snake.push({x: head.x, y: head.y - size})
     };
 
+    // Remove o segmento mais antigo para manter o tamanho da cobra constante.
     snake.shift();
 
 };
@@ -126,7 +133,7 @@ const checkEat = () => {
         let x = randomPosition();
         let y = randomPosition();
 
-
+        // Garante que a nova comida não apareça dentro da cobra.
         while (snake.find((position) => position.x == x && position.y == y)) {
             x = randomPosition();
             y = randomPosition();
@@ -161,7 +168,7 @@ const gameOver = () => {
 }
 
 
-
+// Função principal do jogo que controla o loop do jogo.
 const gameLoop = () => {
     clearInterval(loopId)
     ctx.clearRect(0,0, 600, 600);
@@ -181,7 +188,7 @@ const gameLoop = () => {
 
 gameLoop();
 
-
+// Evento de teclado para controlar a direção da cobra.
 document.addEventListener("keydown", ({key}) => {
     if (key == "d" && direction !== "left"  || key == "D" && direction !== "left" ) {
         direction = "right"
@@ -197,6 +204,7 @@ document.addEventListener("keydown", ({key}) => {
     };
 });
 
+// Evento de teclado para controlar a direção da cobra usando as setas do teclado.
 document.addEventListener("keydown", ({key}) => {
     if (key == "ArrowRight" && direction !== "left") {
         direction = "right"
@@ -224,7 +232,6 @@ buttonPlay.addEventListener("click", () =>{
     food.y = randomPosition();
     food.color = randomColor();
 });
-
 
 buttonLessDifficulty.addEventListener("click", () =>{
     if (timeDelay == 300){
